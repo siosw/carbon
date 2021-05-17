@@ -2,9 +2,9 @@ defmodule Carbon.Intensity do
   use Ecto.Schema
 
   schema "intensities" do
-    field :from, :utc_datetime
-    field :to, :utc_datetime
-    field :actual, :integer
+    field :from, :utc_datetime, null: false
+    field :to, :utc_datetime, null: false
+    field :actual, :integer, null: false
     field :forecast, :integer
     field :index, :string
   end
