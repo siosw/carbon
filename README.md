@@ -1,11 +1,9 @@
 # Carbon
 
 ### TODOs
-- [ ] implement get_current process
-- [x] send API requests using Tesla
-- [x] set up DB + Ecto
-- [x] decide on a reasonable testing strategy
-- [x] draw high level programm overview 
+- [ ] make sure no dupilcate entries are written into DB
+- [ ] test the storage module
+- [ ] plan how the workers (current and prev) should work
 
 ### How good is the air?
 
