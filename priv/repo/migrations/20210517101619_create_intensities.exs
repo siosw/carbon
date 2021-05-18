@@ -9,5 +9,14 @@ defmodule Carbon.Repo.Migrations.CreateIntensities do
       add :forecast, :integer
       add :index, :string
     end
+
+    create unique_index(:intensities, [:from, :to])
   end
 end
+
+# sample query
+
+# import Ecto.Query, only: [from: 2]
+# {:ok, ts, _} = DateTime.from_iso8601 "2020-08-08T12:00:00Z"
+# q = from i in Carbon.Intensity, where: i.from == ^ts
+# Carbon.Repo.all q
