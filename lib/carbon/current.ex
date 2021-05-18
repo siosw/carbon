@@ -1,5 +1,4 @@
 defmodule Carbon.Current do
-
   # get latest timestamp
   #   if nil get today
   #   else get from now back to latest timestamp
@@ -8,8 +7,10 @@ defmodule Carbon.Current do
     case last_timestamp() do
       nil ->
         {:ok, timestamp} = DateTime.now("Etc/UTC")
+
         timestamp
         |> DateTime.truncate(:second)
+
       timestamp ->
         timestamp
     end
@@ -25,5 +26,4 @@ defmodule Carbon.Current do
       BadMapError -> nil
     end
   end
-
 end

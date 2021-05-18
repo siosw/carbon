@@ -18,26 +18,24 @@ defmodule Carbon.StorageTest do
   end
 
   test "map_to_intensity/1 correctly converts map to struct" do
-    map =
-      %{
-        "from" => "2020-08-08T16:00Z",
-        "intensity" => %{
-          "actual" => 185,
-          "forecast" => 178,
-          "index" => "moderate"
-        },
-        "to" => "2020-08-08T16:30Z"
-      }
+    map = %{
+      "from" => "2020-08-08T16:00Z",
+      "intensity" => %{
+        "actual" => 185,
+        "forecast" => 178,
+        "index" => "moderate"
+      },
+      "to" => "2020-08-08T16:30Z"
+    }
 
-    expected =
-      %Carbon.Intensity{
-        actual: 185,
-        forecast: 178,
-        from: ~U[2020-08-08 16:00:00Z],
-        id: nil,
-        index: "moderate",
-        to: ~U[2020-08-08 16:30:00Z]
-      }
+    expected = %Carbon.Intensity{
+      actual: 185,
+      forecast: 178,
+      from: ~U[2020-08-08 16:00:00Z],
+      id: nil,
+      index: "moderate",
+      to: ~U[2020-08-08 16:30:00Z]
+    }
 
     assert expected == Storage.map_to_intensity(map)
   end

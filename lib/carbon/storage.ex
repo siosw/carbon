@@ -3,7 +3,7 @@ defmodule Carbon.Storage do
 
   def store_date(date) do
     {:ok, resp} = HttpRequest.intensity(date)
-    resp |> save
+    save(resp)
   end
 
   def save(%{status: 200} = resp) do
@@ -11,7 +11,7 @@ defmodule Carbon.Storage do
     |> Map.get("data")
     |> Enum.map(&map_to_intensity/1)
     |> Enum.map(&insert_and_count/1)
-    |> Enum.sum
+    |> Enum.sum()
   end
 
   def save(resp) do
@@ -30,6 +30,7 @@ defmodule Carbon.Storage do
 
   def map_to_intensity(m) do
     int = Map.get(m, "intensity")
+
     %Carbon.Intensity{
       from: to_timestamp(Map.get(m, "from")),
       to: to_timestamp(Map.get(m, "to")),

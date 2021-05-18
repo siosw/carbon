@@ -1,8 +1,8 @@
 defmodule Carbon.HttpRequest do
   use Tesla
 
-  plug Tesla.Middleware.BaseUrl, "https://api.carbonintensity.org.uk"
-  plug Tesla.Middleware.JSON
+  plug(Tesla.Middleware.BaseUrl, "https://api.carbonintensity.org.uk")
+  plug(Tesla.Middleware.JSON)
 
   def intensity() do
     get("/intensity")
