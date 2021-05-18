@@ -1,5 +1,5 @@
 defmodule CarbonTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest Carbon
 
   test "greets the world" do

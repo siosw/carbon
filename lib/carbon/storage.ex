@@ -14,7 +14,7 @@ defmodule Carbon.Storage do
   end
 
   def save(resp) do
-    throw "API returned #{resp.status}"
+    raise RuntimeError, "#{resp.status} response from API"
   end
 
   def map_to_intensity(m) do
@@ -29,11 +29,14 @@ defmodule Carbon.Storage do
   end
 
   def to_timestamp(time_string) do
-    {:ok, timestamp, _} =
+    conversion =
       time_string
       |> String.replace("Z", ":00Z")
       |> DateTime.from_iso8601()
 
-    timestamp
+    case conversion do
+      {:ok, timestamp, _} -> timestamp
+      {:error, _} -> raise ArgumentError
+    end
   end
 end
