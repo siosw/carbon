@@ -13,6 +13,7 @@ defmodule Carbon.Intensity do
     intensity
     |> Ecto.Changeset.cast(params, [:from, :to, :actual, :forecast, :index])
     |> Ecto.Changeset.validate_required([:from, :to, :actual])
+    |> Ecto.Changeset.unique_constraint(:from, name: :intensities_from_to_index)
   end
 
 end

@@ -10,7 +10,7 @@ defmodule Carbon.Repo.Migrations.CreateIntensities do
       add :index, :string
     end
 
-    create unique_index(:intensities, [:from, :to])
+    create unique_index(:intensities, [:from, :to], name: :intensities_from_to_index)
   end
 end
 

@@ -10,11 +10,22 @@ defmodule Carbon.Storage do
     resp.body
     |> Map.get("data")
     |> Enum.map(&map_to_intensity/1)
-    |> Enum.each(&Carbon.Repo.insert!/1)
+    |> Enum.map(&insert_and_count/1)
+    |> Enum.sum
   end
 
   def save(resp) do
     raise RuntimeError, "#{resp.status} response from API"
+  end
+
+  def insert_and_count(intensity) do
+    intensity
+    |> Carbon.Intensity.changeset(%{})
+    |> Carbon.Repo.insert()
+    |> case do
+      {:ok, _} -> 1
+      {:error, _} -> 0
+    end
   end
 
   def map_to_intensity(m) do
