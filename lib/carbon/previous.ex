@@ -3,23 +3,16 @@ defmodule Carbon.Previous do
 
   alias Carbon.Storage
 
-  # bench: 27.441625s for 100 days
-  def get_sync(days) do
-    0..-days
-    |> Enum.map(&Date.add(last_known_date(), &1))
-    |> Enum.map(&Date.to_string/1)
-    |> Enum.map(&Storage.store_date/1)
-    |> Enum.sum()
+  def get(days) do
+    days
+    |> days_to_date_list()
+    |> download_dates()
   end
 
-  # bench: 2.894843s for 100 days
-  def get_async(days) do
+  def days_to_date_list(days) do
     0..-days
     |> Enum.map(&Date.add(last_known_date(), &1))
     |> Enum.map(&Date.to_string/1)
-    |> Enum.map(&spawn_store_date/1)
-    |> Enum.map(&receive_result/1)
-    |> Enum.sum()
   end
 
   def last_known_date() do
@@ -32,22 +25,11 @@ defmodule Carbon.Previous do
     end
   end
 
-  defp receive_result(_pid) do
-    receive do
-      {:result, count} -> count
-    end
-  end
-
-  defp spawn_store_date(date) do
-    parent = self()
-    spawn(fn -> send(parent, {:result, wrap_store(date)}) end)
-  end
-
-  defp wrap_store(date) do
-    try do
-      Storage.store_date(date)
-    rescue
-      _ -> 0
-    end
+  def download_dates(dates) do
+    dates
+    |> Task.async_stream(Storage, :store_date, [], max_concurrency: System.schedulers_online() * 2)
+    |> Enum.to_list()
+    |> Keyword.get_values(:ok)
+    |> Enum.sum()
   end
 end
