@@ -1,4 +1,4 @@
-defmodule Carbon.Previous do
+defmodule Carbon.Past do
   import Ecto.Query, only: [from: 2]
 
   alias Carbon.Storage

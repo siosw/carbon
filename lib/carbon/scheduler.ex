@@ -21,7 +21,7 @@ defmodule Carbon.Scheduler do
   end
 
   defp do_recurrent_thing() do
-    Carbon.Previous.get(30)
+    Carbon.Past.get(30)
     Carbon.Gaps.get()
   end
 end
