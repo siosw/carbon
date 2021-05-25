@@ -1,4 +1,6 @@
 defmodule Carbon.Storage do
+  import Ecto.Query, only: [from: 2]
+
   alias Carbon.HttpRequest
   alias Carbon.Storage
 
@@ -8,6 +10,16 @@ defmodule Carbon.Storage do
     |> Enum.to_list()
     |> Keyword.get_values(:ok)
     |> Enum.sum()
+  end
+
+  def last_known_date() do
+    sq = from s_d in Carbon.Intensity, select: min(s_d.to)
+    from(t in Carbon.Intensity, where: t.to in subquery(sq), select: t.to)
+    |> Carbon.Repo.one!()
+    |> case do
+      nil -> Date.utc_today()
+      timestamp -> DateTime.to_date(timestamp)
+    end
   end
 
   def store_date(date) do
