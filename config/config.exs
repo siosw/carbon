@@ -5,6 +5,6 @@ config :carbon, Carbon.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
-  log: false
+  log: false # false to disable, :info to show
 
 config :carbon, ecto_repos: [Carbon.Repo]
