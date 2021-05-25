@@ -1,10 +1,5 @@
 # Carbon
 
-### TODOs
-- [x] make sure no dupilcate entries are written into DB
-- [x] test the storage module
-- [ ] plan how the workers (current and prev) should work
-
 ### How good is the air?
 
 #### Intro
