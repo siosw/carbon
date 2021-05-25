@@ -51,4 +51,12 @@ defmodule Carbon.Storage do
       {:error, _} -> raise ArgumentError
     end
   end
+
+  def download_dates(dates) do
+    dates
+    |> Task.async_stream(Storage, :store_date, [], max_concurrency: System.schedulers_online() * 2)
+    |> Enum.to_list()
+    |> Keyword.get_values(:ok)
+    |> Enum.sum()
+  end
 end

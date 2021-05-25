@@ -1,11 +1,13 @@
 defmodule Carbon.Gaps do
   import Ecto.Query, only: [from: 2]
 
+  alias Carbon.Storage
+
   def get() do
     get_missing_timestamps()
     |> Enum.map(&DateTime.to_date/1)
     |> Enum.map(&Date.to_string/1)
-    |> Carbon.Previous.download_dates()
+    |> Storage.download_dates()
   end
 
   def get_missing_timestamps() do
@@ -21,5 +23,4 @@ defmodule Carbon.Gaps do
 
     Carbon.Repo.all(query)
   end
-
 end

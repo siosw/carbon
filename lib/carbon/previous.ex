@@ -6,7 +6,7 @@ defmodule Carbon.Previous do
   def get(days) do
     days
     |> days_to_date_list()
-    |> download_dates()
+    |> Storage.download_dates()
   end
 
   def days_to_date_list(days) do
@@ -23,13 +23,5 @@ defmodule Carbon.Previous do
       nil -> Date.utc_today()
       timestamp -> DateTime.to_date(timestamp)
     end
-  end
-
-  def download_dates(dates) do
-    dates
-    |> Task.async_stream(Storage, :store_date, [], max_concurrency: System.schedulers_online() * 2)
-    |> Enum.to_list()
-    |> Keyword.get_values(:ok)
-    |> Enum.sum()
   end
 end
