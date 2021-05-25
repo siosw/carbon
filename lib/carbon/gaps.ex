@@ -4,10 +4,10 @@ defmodule Carbon.Gaps do
   alias Carbon.Storage
 
   def get() do
-    IO.puts "number of gaps found:"
-    get_missing_timestamps() |> length() |> IO.puts
+    timestamps = get_missing_timestamps()
+    IO.puts "number of gaps found: #{length(timestamps)}"
 
-    get_missing_timestamps()
+    timestamps
     |> Enum.map(&DateTime.to_date/1)
     |> Enum.map(&Date.to_string/1)
     |> Storage.download_dates()
