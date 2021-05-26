@@ -1,8 +1,7 @@
 defmodule Carbon.Storage do
   import Ecto.Query, only: [from: 2]
 
-  alias Carbon.HttpRequest
-  alias Carbon.Storage
+  alias Carbon.{HttpRequest, Storage, Util}
 
   def download_dates(dates) do
     dates
@@ -12,7 +11,7 @@ defmodule Carbon.Storage do
     |> Enum.sum()
   end
 
-  def last_known_date() do
+  def get_last_known_date() do
     sq = from s_d in Carbon.Intensity, select: min(s_d.to)
     from(t in Carbon.Intensity, where: t.to in subquery(sq), select: t.to)
     |> Carbon.Repo.one!()
@@ -30,7 +29,7 @@ defmodule Carbon.Storage do
   def save(%{status: 200} = resp) do
     resp.body
     |> Map.get("data")
-    |> Enum.map(&map_to_intensity/1)
+    |> Enum.map(&Util.map_to_intensity/1)
     |> Enum.map(&insert_and_count/1)
     |> Enum.sum()
   end
@@ -46,30 +45,6 @@ defmodule Carbon.Storage do
     |> case do
       {:ok, _} -> 1
       {:error, _} -> 0
-    end
-  end
-
-  def map_to_intensity(m) do
-    int = Map.get(m, "intensity")
-
-    %Carbon.Intensity{
-      from: to_timestamp(Map.get(m, "from")),
-      to: to_timestamp(Map.get(m, "to")),
-      actual: Map.get(int, "actual"),
-      forecast: Map.get(int, "forecast"),
-      index: Map.get(int, "index")
-    }
-  end
-
-  def to_timestamp(time_string) do
-    conversion =
-      time_string
-      |> String.replace("Z", ":00Z")
-      |> DateTime.from_iso8601()
-
-    case conversion do
-      {:ok, timestamp, _} -> timestamp
-      {:error, _} -> raise ArgumentError
     end
   end
 end

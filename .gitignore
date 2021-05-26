@@ -25,3 +25,6 @@ carbon-*.tar
 
 # Temporary files for e.g. tests
 /tmp
+
+# mimic test files
+/test/.DS_Store

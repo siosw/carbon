@@ -8,7 +8,7 @@ defmodule Carbon.PastTest do
     {:ok, date} = Date.from_iso8601("2020-02-02")
 
     Storage
-    |> stub(:last_known_date, fn -> date end)
+    |> stub(:get_last_known_date, fn -> date end)
 
     assert Past.days_to_date_list(0) == ["2020-02-02"]
     assert Past.days_to_date_list(1) == ["2020-02-02", "2020-02-01"]

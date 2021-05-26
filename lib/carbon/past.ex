@@ -10,7 +10,7 @@ defmodule Carbon.Past do
 
   def days_to_date_list(days) when days >= 0 do
     0..-days
-    |> Enum.map(&Date.add(Storage.last_known_date(), &1))
+    |> Enum.map(&Date.add(Storage.get_last_known_date(), &1))
     |> Enum.map(&Date.to_string/1)
   end
 
