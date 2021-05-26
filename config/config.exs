@@ -8,3 +8,5 @@ config :carbon, Carbon.Repo,
   log: false # false to disable, :info to show
 
 config :carbon, ecto_repos: [Carbon.Repo]
+
+import_config "#{Mix.env()}.exs"

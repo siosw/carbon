@@ -38,7 +38,7 @@ defmodule Carbon.Storage do
     raise RuntimeError, "#{resp.status} response from API"
   end
 
-  def insert_and_count(intensity) do
+  def insert_and_count(%Carbon.Intensity{id: nil} = intensity) do
     intensity
     |> Carbon.Intensity.changeset(%{})
     |> Carbon.Repo.insert()
@@ -47,4 +47,6 @@ defmodule Carbon.Storage do
       {:error, _} -> 0
     end
   end
+
+  def insert_and_count(%Carbon.Intensity{id: _some} = _intensity), do: raise ArgumentError
 end
