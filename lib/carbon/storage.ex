@@ -3,12 +3,31 @@ defmodule Carbon.Storage do
 
   alias Carbon.{HttpRequest, Storage, Util}
 
-  def download_dates(dates) do
+  def store_dates(dates) do
     dates
     |> Task.async_stream(Storage, :store_date, [], max_concurrency: System.schedulers_online() * 2)
     |> Enum.to_list()
     |> Keyword.get_values(:ok)
     |> Enum.sum()
+  end
+
+  def store_date(date) do
+    case HttpRequest.intensity(date) do
+      {:ok, resp} -> store_resp(resp)
+      {:error, err} -> raise err
+    end
+  end
+
+  def store_resp(%{status: 200} = resp) do
+    resp.body
+    |> Map.get("data")
+    |> Enum.map(&Util.map_to_intensity/1)
+    |> Enum.map(&insert_and_count/1)
+    |> Enum.sum()
+  end
+
+  def store_resp(resp) do
+    raise RuntimeError, "#{resp.status} response from API"
   end
 
   def get_last_known_date() do
@@ -19,23 +38,6 @@ defmodule Carbon.Storage do
       nil -> Date.utc_today()
       timestamp -> DateTime.to_date(timestamp)
     end
-  end
-
-  def store_date(date) do
-    {:ok, resp} = HttpRequest.intensity(date)
-    save(resp)
-  end
-
-  def save(%{status: 200} = resp) do
-    resp.body
-    |> Map.get("data")
-    |> Enum.map(&Util.map_to_intensity/1)
-    |> Enum.map(&insert_and_count/1)
-    |> Enum.sum()
-  end
-
-  def save(resp) do
-    raise RuntimeError, "#{resp.status} response from API"
   end
 
   def insert_and_count(%Carbon.Intensity{id: nil} = intensity) do

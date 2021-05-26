@@ -5,7 +5,7 @@ defmodule Carbon.Past do
   def get(days) do
     days
     |> days_to_date_list()
-    |> Storage.download_dates()
+    |> Storage.store_dates()
   end
 
   def days_to_date_list(days) when days >= 0 do
