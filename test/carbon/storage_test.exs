@@ -11,15 +11,6 @@ defmodule Carbon.StorageTest do
     to: ~U[2021-05-24 23:30:00Z]
   }
 
-  @example_intensity_with_id %Intensity{
-    actual: 135,
-    forecast: 132,
-    from: ~U[2021-05-24 23:00:00Z],
-    id: 1,
-    index: "low",
-    to: ~U[2021-05-24 23:30:00Z]
-  }
-
   test "insert_and_count/1 inserts intensity and returns count" do
     assert Storage.insert_and_count(@example_intensity) == 1
     assert Storage.insert_and_count(@example_intensity) == 0
