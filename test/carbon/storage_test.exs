@@ -77,4 +77,14 @@ defmodule Carbon.StorageTest do
       Storage.store_date("2020-02-02")
     end
   end
+
+  test "last_known_date/1 returns expected date" do
+    {:ok, date} = Date.from_iso8601("2021-05-24")
+
+    {:ok, _} = @example_intensity
+    |> Carbon.Intensity.changeset(%{})
+    |> Carbon.Repo.insert()
+
+    assert Storage.get_last_known_date() == date
+  end
 end
