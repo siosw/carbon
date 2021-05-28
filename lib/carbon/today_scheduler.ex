@@ -1,4 +1,4 @@
-defmodule Carbon.Scheduler do
+defmodule Carbon.TodayScheduler do
   use GenServer
 
   def start_link(_args) do
@@ -6,7 +6,7 @@ defmodule Carbon.Scheduler do
   end
 
   def init(_args) do
-    IO.puts "scheduler initialized"
+    IO.puts "TodayScheduler initialized"
     schedule_work()
     {:ok, "✅"}
   end
@@ -23,11 +23,6 @@ defmodule Carbon.Scheduler do
 
   defp do_work() do
     IO.puts "collecting todays data"
-    IO.inspect Carbon.Today.get()
-    IO.puts "collecting past data"
-    IO.inspect Carbon.Past.get(30)
-    IO.puts "trying to fill gaps"
-    IO.inspect Carbon.Gaps.get()
-    IO.puts "done for now..."
+    IO.puts "got #{Carbon.Today.get()} datapoints from today"
   end
 end

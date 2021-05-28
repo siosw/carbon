@@ -5,7 +5,9 @@ defmodule Carbon.Application do
   def start(_type, _args) do
     children = [
       {Carbon.Repo, []},
-      {Carbon.Scheduler, []}
+      {Carbon.TodayScheduler, []},
+      {Carbon.PastScheduler, []},
+      {Carbon.GapsScheduler, []},
     ]
 
     opts = [strategy: :one_for_one, name: Carbon.Supervisor]
