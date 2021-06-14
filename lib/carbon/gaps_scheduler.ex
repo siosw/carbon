@@ -1,12 +1,13 @@
 defmodule Carbon.GapsScheduler do
   use GenServer
+  require Logger
 
   def start_link(_args) do
     GenServer.start_link(__MODULE__, %{})
   end
 
   def init(_args) do
-    IO.puts "GapsScheduler initialized"
+    Logger.info "GapsScheduler initialized"
     schedule_work()
     {:ok, "✅"}
   end
@@ -22,7 +23,9 @@ defmodule Carbon.GapsScheduler do
   end
 
   defp do_work() do
-    IO.puts "trying to fill gaps"
-    IO.puts "filled #{Carbon.Gaps.get()} gaps"
+    num_datapoints = Carbon.Gaps.get()
+
+    Logger.info "trying to fill gaps..."
+    Logger.info "filled #{num_datapoints} gaps"
   end
 end

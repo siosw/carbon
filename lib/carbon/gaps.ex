@@ -1,11 +1,12 @@
 defmodule Carbon.Gaps do
   import Ecto.Query, only: [from: 2]
+  require Logger
 
   alias Carbon.Storage
 
   def get() do
     timestamps = get_missing_timestamps()
-    IO.puts "number of gaps found: #{length(timestamps)}"
+    Logger.info "number of gaps found: #{length(timestamps)}"
 
     timestamps
     |> Enum.map(&DateTime.to_date/1)

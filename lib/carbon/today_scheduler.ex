@@ -1,12 +1,13 @@
 defmodule Carbon.TodayScheduler do
   use GenServer
+  require Logger
 
   def start_link(_args) do
     GenServer.start_link(__MODULE__, %{})
   end
 
   def init(_args) do
-    IO.puts "TodayScheduler initialized"
+    Logger.info "TodayScheduler initialized"
     schedule_work()
     {:ok, "✅"}
   end
@@ -22,7 +23,9 @@ defmodule Carbon.TodayScheduler do
   end
 
   defp do_work() do
-    IO.puts "collecting todays data"
-    IO.puts "got #{Carbon.Today.get()} datapoints from today"
+    Logger.info "collecting todays data..."
+    num_datapoints = Carbon.Today.get()
+
+    Logger.info "got #{num_datapoints} datapoints from today"
   end
 end

@@ -1,12 +1,13 @@
 defmodule Carbon.PastScheduler do
   use GenServer
+  require Logger
 
   def start_link(_args) do
     GenServer.start_link(__MODULE__, %{})
   end
 
   def init(_args) do
-    IO.puts "PastScheduler initialized"
+    Logger.info "PastScheduler initialized"
     schedule_work()
     {:ok, "✅"}
   end
@@ -22,7 +23,9 @@ defmodule Carbon.PastScheduler do
   end
 
   defp do_work() do
-    IO.puts "collecting past data"
-    IO.puts "got #{Carbon.Past.get(30)} past datapoints"
+    num_datapoints = Carbon.Past.get(30)
+
+    Logger.info "collecting past data..."
+    Logger.info "got #{num_datapoints} past datapoints"
   end
 end
