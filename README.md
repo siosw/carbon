@@ -1,6 +1,16 @@
 # Carbon
 
-### How good is the air?
+## Usage
+This assumes a running PostgreSQL Server. 
+Username and Password can be set in `config.exs`.
+
+`mix run --no-halt`
+
+## Author
+simon.oswald@adjust.com
+
+## About
+How good is the air?
 
 #### Intro
 With development of enhanced monitoring systems everywhere, we're now able to get lots of information about things around us. Lots of facilities offer API to access and leverage data.  For this test exercise we will use one of those APIs and play with it's data.
