@@ -2,6 +2,9 @@ defmodule Carbon.PastScheduler do
   use GenServer
   require Logger
 
+  # chosen at random
+  @number_of_days 30
+
   def start_link(_args) do
     GenServer.start_link(__MODULE__, %{})
   end
@@ -24,7 +27,7 @@ defmodule Carbon.PastScheduler do
   end
 
   defp do_work() do
-    num_datapoints = Carbon.Past.get(30)
+    num_datapoints = Carbon.Past.get(@number_of_days)
 
     Logger.info "collecting past data..."
     Logger.info "got #{num_datapoints} past datapoints"
