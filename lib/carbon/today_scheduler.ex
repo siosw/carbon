@@ -19,7 +19,8 @@ defmodule Carbon.TodayScheduler do
   end
 
   defp schedule_work() do
-    Process.send_after(self(), :work, 10 * 1000)
+    interval = Application.fetch_env!(:carbon, :today_interval)
+    Process.send_after(self(), :work, interval)
   end
 
   defp do_work() do
