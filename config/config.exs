@@ -11,6 +11,6 @@ config :carbon,
   ecto_repos: [Carbon.Repo],
   gap_interval: 24 * 60 * 60 * 1000,
   today_interval: 12 * 60 * 60 * 1000,
-  past_interval: 24 * 60 * 60 * 1000
+  past_interval: 60 * 60 * 1000
 
 import_config "#{Mix.env()}.exs"
