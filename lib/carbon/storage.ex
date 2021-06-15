@@ -3,6 +3,10 @@ defmodule Carbon.Storage do
 
   alias Carbon.{HttpRequest, Storage, Util}
 
+  @moduledoc """
+  This module provides functions to interact with the DB.
+  """
+
   def fetch_and_store_dates(dates) when is_list(dates) do
     dates
     |> Task.async_stream(Storage, :fetch_date, [])

@@ -2,6 +2,10 @@ defmodule Carbon.Past do
 
   alias Carbon.Storage
 
+  @moduledoc """
+  This module provides a get/0 function which looks up the last known date and tries fetch even
+  older entries. There is no backing off functionality implemented.
+  """
   def get(days) do
     days
     |> days_to_date_list()

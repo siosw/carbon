@@ -4,6 +4,12 @@ defmodule Carbon.Gaps do
 
   alias Carbon.Storage
 
+  @moduledoc """
+  This module provides a get/0 function to search for gaps in the DB and try to refetch them.
+  A gap is defined as a 30min window where no Intensity is saved.
+  If a gap is found the whole day is refetched, not just the 30min window.
+  """
+
   def get() do
     timestamps = get_missing_timestamps()
     Logger.info "number of gaps found: #{length(timestamps)}"
