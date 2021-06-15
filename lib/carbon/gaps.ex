@@ -11,7 +11,7 @@ defmodule Carbon.Gaps do
     timestamps
     |> Enum.map(&DateTime.to_date/1)
     |> Enum.map(&Date.to_string/1)
-    |> Storage.store_dates()
+    |> Storage.fetch_and_store_dates()
   end
 
   def get_missing_timestamps() do

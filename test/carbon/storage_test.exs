@@ -39,42 +39,21 @@ defmodule Carbon.StorageTest do
     status: 200,
   }
 
-  test "insert_and_count/1 inserts intensity and returns count" do
-    assert Storage.insert_and_count(@example_intensity) == 1
-    assert Storage.insert_and_count(@example_intensity) == 0
+  test "store_intensity/1 inserts correctly" do
+    {status, inserted} = Storage.store_intensity(@example_intensity)
+    assert status == :ok
+    assert inserted.id != nil
   end
 
-  test "insert_and_count/1 rejects intensity with id" do
-    assert_raise ArgumentError, fn ->
-      Storage.insert_and_count(%Intensity{@example_intensity | id: 999})
-    end
+  test "response_to_intensities/1 returns expected Intensities" do
+    [first, second] = Storage.response_to_intensities(@example_response)
+    assert first.actual == 181
+    assert second.actual == 180
   end
 
-  test "store_date/1 stores Intensities for a date" do
-    HttpRequest
-    |> stub(:intensity, fn _date -> {:ok, @example_response} end)
-
-    Storage.store_date("2020-02-02")
-
-    assert Carbon.Repo.get_by(Intensity, forecast: 180, actual: 181) != nil
-    assert Carbon.Repo.get_by(Intensity, forecast: 178, actual: 180) != nil
-  end
-
-  test "store_date/1 raises on non 200 response code" do
-    HttpRequest
-    |> stub(:intensity, fn _date -> {:ok, %Tesla.Env{status: 400}} end)
-
+  test "response_to_intensities/1 raises on non 200 response code" do
     assert_raise RuntimeError, fn ->
-      Storage.store_date("2020-02-02")
-    end
-  end
-
-  test "store_date/1 raises on unsuccessful http request" do
-    HttpRequest
-    |> stub(:intensity, fn _date -> {:error, RuntimeError} end)
-
-    assert_raise RuntimeError, fn ->
-      Storage.store_date("2020-02-02")
+      Storage.response_to_intensities(%Tesla.Env{status: 404})
     end
   end
 

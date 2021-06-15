@@ -1,8 +1,9 @@
 defmodule Carbon.Today do
 
   def get() do
-    Date.utc_today()
+    date = Date.utc_today()
     |> Date.to_string()
-    |> Carbon.Storage.store_date()
+
+    Carbon.Storage.fetch_and_store_dates([date])
   end
 end
